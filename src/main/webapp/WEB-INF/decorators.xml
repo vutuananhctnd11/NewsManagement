@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+
+	
+    <decorator name="web" page="web.jsp">
+       <pattern>/*</pattern>
+    </decorator>
+    
+    <decorator name="admin" page="admin.jsp">
+       <pattern>/quantri*</pattern>
+    </decorator>
+    
+    <decorator name="login" page="login1.jsp">
+        <pattern>/dangnhap</pattern>
+    </decorator>
+</decorators>
