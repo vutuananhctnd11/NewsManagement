@@ -36,4 +36,7 @@
 	
 	<mvc:resources mapping="/template/**" location="/template/" />
 	
+	<!-- Tạo bean xác định dữ liệu multipart khi upload file -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
 </beans>

@@ -18,7 +18,7 @@ import com.laptrinhjavaweb.service.ICategoryService;
 import com.laptrinhjavaweb.service.INewService;
 import com.laptrinhjavaweb.util.MessageUtil;
 
-@Controller(value = "newControllerOfAdmin")
+@Controller(value = "newsControllerOfAdmin")
 public class NewsController {
 	
 	@Autowired
@@ -44,6 +44,7 @@ public class NewsController {
 			mav.addObject("message", message.get("message"));
 		}
 		mav.addObject("model", model);
+		mav.addObject("categories", categoryService.findAll());
 		return mav;
 	}
 	

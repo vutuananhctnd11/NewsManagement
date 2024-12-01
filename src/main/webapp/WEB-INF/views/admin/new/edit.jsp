@@ -6,6 +6,8 @@
 <html>
 <head>
 <title>Chỉnh sửa bài viết</title>
+<!-- CKeditor -->
+	<script src="<c:url value='/template/ckeditor/ckeditor.js'/>"></script>
 </head>
 <body>
 	<div class="main-content">
@@ -123,9 +125,24 @@
 		</div>
 	</div>
 	<script>
+	$(document).ready(function(){
+		CKEDITOR.replace('content');
+	});
+		
 		$('#btnAddOrUpdateNews').click(function (e) {
 		    e.preventDefault();
 		    
+		    //synchronous data from ckeditor to text area
+		    for (let instance in CKEDITOR.instances) {
+		        CKEDITOR.instances[instance].updateElement();
+		    }
+			
+			var editorContent = CKEDITOR.instances['content'].getData();
+		    console.log("Nội dung CKEditor:", editorContent);
+		   	
+		   console.log("Nội dung content:", $('#content').val());
+		    
+
 			// validate data
 		    if ($('#categoryCode').val() == "") {
 		    	alert("Chưa chọn thể loại bài viết");

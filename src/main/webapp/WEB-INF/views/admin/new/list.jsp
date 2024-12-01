@@ -61,6 +61,7 @@
 												<tr>
 												<th><input type="checkbox" id="checkAll"></th>
 													<th style="text-align: center; font-size: 16px;">Tên bài viết</th>
+													<th style="text-align: center; font-size: 16px;width: 8%;">Thể loại  </th>
 													<th style="text-align: center; font-size: 16px;">Mô tả ngắn</th>
 													<th style="text-align: center; font-size: 16px;">Thao tác</th>
 												</tr>
@@ -70,6 +71,11 @@
 													<tr style="font-size: 16px;">
 													<td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
 														<td>${item.title}</td>
+														<td>
+															<c:forEach var="entry" items="${categories}">
+																<c:if test="${entry.key eq item.categoryCode}">${entry.value}</c:if>
+															</c:forEach>
+														</td>
 														<td>${item.shortDescription}</td>
 														<td style="display: flex;">
 															<c:url var="updateNewsURL" value="/quantri/baiviet/chinhsua">

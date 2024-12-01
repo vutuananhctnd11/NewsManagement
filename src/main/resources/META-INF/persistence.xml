@@ -5,6 +5,7 @@
         <class>com.laptrinhjavaweb.entity.UserEntity</class>
         <class>com.laptrinhjavaweb.entity.RoleEntity</class>
         <class>com.laptrinhjavaweb.entity.CategoryEntity</class>
+        <class>com.laptrinhjavaweb.entity.CommentEntity</class>
     </persistence-unit>
 </persistence>
 
