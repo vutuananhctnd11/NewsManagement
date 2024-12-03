@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class AbstractDTO<T> {
 	
 	private Long id;

@@ -2,6 +2,9 @@ package com.laptrinhjavaweb.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,14 +14,24 @@ public class CommentEntity extends BaseEntity {
 	@Column(name="content")
 	private String content;
 	
-	@Column(name="like")
-	private long like;
+	@Column(name="likecomment")
+	private long likeComment;
 	
 	@Column(name="userid")
 	private long userId;
 	
 	@Column(name="newsid")
 	private long newsId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "newsid", insertable=false, updatable=false)
+	private NewsEntity news;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid", insertable=false, updatable=false)
+	private UserEntity user;
+	
+	
 
 	public String getContent() {
 		return content;
@@ -28,12 +41,12 @@ public class CommentEntity extends BaseEntity {
 		this.content = content;
 	}
 
-	public long getLike() {
-		return like;
+	public long getLikeComment() {
+		return likeComment;
 	}
 
-	public void setLike(long like) {
-		this.like = like;
+	public void setLikeComment(long likeComment) {
+		this.likeComment = likeComment;
 	}
 
 	public long getUserId() {
@@ -50,6 +63,22 @@ public class CommentEntity extends BaseEntity {
 
 	public void setNewsId(long newsId) {
 		this.newsId = newsId;
+	}
+
+	public NewsEntity getNews() {
+		return news;
+	}
+
+	public void setNews(NewsEntity news) {
+		this.news = news;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 	
 	

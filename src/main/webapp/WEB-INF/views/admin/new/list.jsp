@@ -69,7 +69,7 @@
 											<tbody>
 												<c:forEach var="item" items="${model.listResult}">
 													<tr style="font-size: 16px;">
-													<td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
+													<td><input type="checkbox" class="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
 														<td>${item.title}</td>
 														<td>
 															<c:forEach var="entry" items="${categories}">
@@ -115,12 +115,24 @@
 	</div>
 	<!-- /.main-content -->
 	<script>
+	//hàm config checkbox
+    $(document).ready(function() {
+	    $('#checkAll').on('change', function() {
+	        if ($(this).prop('checked')) {
+	            $('.checkbox').prop('checked', true);
+	        } else {
+	            $('.checkbox').prop('checked', false);
+	        }
+	    });
+	});
+	
+	
 		$(function() {
 			var currentPage = ${model.page};
 			var totalPage = ${model.totalPage};
 			var limit = ${model.limit}; 
 			window.pagObj = $('#pagination').twbsPagination({
-				totalPages : totalPage,
+				totalPages : totalPage || 1,
 				visiblePages : 6,
 				startPage: currentPage,
 				onPageClick : function(event, page) {
@@ -166,7 +178,6 @@
         				return $(this).val();
         			}).get();
         			deleteNews(ids);
-        			//window.location.href = "${newsURL}?page="+page+"&limit="+limit+"&message=delete_success";
         			swal("Đã xóa!", "Dữ liệu của bạn đã được xóa.", "success");
         		  }
         		});
@@ -178,7 +189,9 @@
 	            contentType: 'application/json',
 	            data: JSON.stringify(data),
 	            success: function (result) {
-	            	location.reload();
+	            	swal("", "Dữ liệu của bạn đã được xóa.", "success").then(function(result){
+	            		window.location.href = "${newsURL}?page=1&limit=5&message=delete_success";
+	            	});
 	            },
 	            error: function (error) {
 	            	window.location.href = "${newsURL}?page=1&limit=5&message=error_system";

@@ -1,7 +1,9 @@
 package com.laptrinhjavaweb.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.laptrinhjavaweb.converter.NewsConverter;
 import com.laptrinhjavaweb.dto.NewsDTO;
 import com.laptrinhjavaweb.entity.CategoryEntity;
+import com.laptrinhjavaweb.entity.CommentEntity;
 import com.laptrinhjavaweb.entity.NewsEntity;
 import com.laptrinhjavaweb.repository.CategoryRepository;
+import com.laptrinhjavaweb.repository.CommentRepository;
 import com.laptrinhjavaweb.repository.NewsRepository;
 import com.laptrinhjavaweb.service.INewService;
 
@@ -25,6 +29,8 @@ public class NewService implements INewService {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private NewsConverter newsConverter;
+	@Autowired
+	private CommentRepository commentRepository;
 	
 
 	
@@ -97,6 +103,25 @@ public class NewService implements INewService {
 		for (long id : ids) {
 			newsRepository.delete(id);
 		}
+	}
+
+	@Override
+	public Map<Long, Long> getTotalCommentOfNews(NewsDTO newsdto) {
+		Map<Long, Long> result = new HashMap<>();
+		List<CommentEntity> listComment = commentRepository.findAll();
+		
+		for (NewsDTO news : newsdto.getListResult()) {
+			long totalComment = 0;
+			for (CommentEntity comment : listComment) {
+				if (news.getId().equals(comment.getNewsId())){
+					totalComment++;
+				}
+			}
+			result.put(news.getId(), totalComment);
+			totalComment=0;
+		}
+
+		return result;
 	}
 
 	

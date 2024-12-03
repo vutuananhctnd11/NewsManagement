@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
@@ -14,5 +15,6 @@ public interface INewService {
 	NewsDTO update (NewsDTO updateNews);
 	NewsDTO  save(NewsDTO dto);
 	void delete (long[] ids);
+	Map<Long, Long> getTotalCommentOfNews (NewsDTO newsdto);
 	
 }

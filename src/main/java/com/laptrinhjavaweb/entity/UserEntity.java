@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +32,9 @@ public class UserEntity extends BaseEntity {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"), 
 								  inverseJoinColumns = @JoinColumn(name = "roleid"))
 	private List<RoleEntity> roles = new ArrayList<>();
+	
+	@OneToMany(mappedBy="user")
+	private List<CommentEntity> comments = new ArrayList<>();
 
 	public String getUserName() {
 		return userName;
@@ -71,4 +75,14 @@ public class UserEntity extends BaseEntity {
 	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
+
+	public List<CommentEntity> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentEntity> comments) {
+		this.comments = comments;
+	}
+	
+	
 }

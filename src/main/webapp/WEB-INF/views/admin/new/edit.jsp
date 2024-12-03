@@ -138,9 +138,6 @@
 		    }
 			
 			var editorContent = CKEDITOR.instances['content'].getData();
-		    console.log("Nội dung CKEditor:", editorContent);
-		   	
-		   console.log("Nội dung content:", $('#content').val());
 		    
 
 			// validate data

@@ -122,7 +122,7 @@
             </ul>
         </li>
         <li class="">
-			<a href="<c:url value='/quantri/binhluan/danhsach?page=1&limit=5'/>">
+			<a href="<c:url value='/quantri/binhluan/baiviet?page=1&limit=5'/>">
 				<i class="fa-regular fa-comment"  style="margin: 0px 5px; font-size: 18px;"></i>
 				<span class="menu-text"> Theo dõi bình luận </span>
 			</a>

@@ -1,10 +1,14 @@
 package com.laptrinhjavaweb.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +30,9 @@ public class NewsEntity extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
+	
+	@OneToMany(mappedBy = "news")
+	private List<CommentEntity> comments = new ArrayList<>();
 	
 	
 	public CategoryEntity getCategory() {
@@ -66,5 +73,15 @@ public class NewsEntity extends BaseEntity {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public List<CommentEntity> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentEntity> comments) {
+		this.comments = comments;
 	}	
+	
+	
 }

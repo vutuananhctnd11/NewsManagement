@@ -1,7 +1,7 @@
 <%@include file="/common/taglib.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<c:url var="commentURL" value="/quantri/binhluan/danhsach"/>
+<c:url var="commentURL" value="/quantri/binhluan/baiviet"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -12,13 +12,13 @@
 
 <body>
 	<div class="main-content">
-		<form action="<c:url value = '/quantri/binhluan/danhsach'/>" id="formSubmit" method="get">
+		<form action="<c:url value = '/quantri/binhluan/baiviet'/>" id="formSubmit" method="get">
 
 			<div class="main-content-inner">
 				<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 					<ul class="breadcrumb">
 						<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Trang chủ</a></li>
-						<li><a href="#">Danh sách bình luận</a></li>
+						<li><a href="#">Theo dõi bình luận</a></li>
 					</ul>
 					<!-- /.breadcrumb -->
 				</div>
@@ -30,9 +30,9 @@
 									<div class="pull-right tableTools-container" style="display: flex;">
 									
 										<div class="dt-buttons btn-overlap btn-group" style="display: flex;">
-										<c:url var="createNewsURL" value="/quantri/baiviet/chinhsua"/>
+										<c:url var="createNewsURL" value="#"/>
 											<a flag="info" class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-												data-toggle="tooltip" title='Thêm bài viết' href='${createNewsURL}'> 
+												data-toggle="tooltip" title='Thêm bình luận' href='${createNewsURL}'> 
 												<span>
 													<i class="fa fa-plus-circle bigger-110 purple"></i>
 												</span>
@@ -50,13 +50,14 @@
 							<div class="row">
 								<div class="col-xs-12">
 									<div class="table-responsive">
-										<table class="table table-bordered" style="align-items: center;">
+										<table class="table table-bordered">
 											<thead>
 												<tr>
 													<th style="text-align: center; font-size: 16px;">Tên bài viết</th>
 													<th style="text-align: center; font-size: 16px;">Thể loại  </th>
 													<th style="text-align: center; font-size: 16px;">Tổng số bình luận</th>
 													<th style="text-align: center; font-size: 16px;">Thao tác</th>
+													
 												</tr>
 											</thead>
 											<tbody>
@@ -68,18 +69,20 @@
 																<c:if test="${entry.key eq item.categoryCode}">${entry.value}</c:if>
 															</c:forEach>
 														</td>
-														<td style="text-align: center;">30</td>
-														<td style="display: flex;">
-															<c:url var="updateNewsURL" value="/quantri/binhluan/chitiet">
-																<c:param name="id" value="${item.id}"></c:param>
+														<td style="text-align: center;">
+															<c:forEach var="total" items="${totalComment}" >
+																<c:if test="${total.key eq item.id}">${total.value}</c:if>
+															</c:forEach>
+														</td>
+														<td style="display: flex; justify-content: center;">
+															<c:url var="listCommentURL" value="/quantri/binhluan/chitiet">
+																<c:param name="newsid" value="${item.id}"></c:param>
+																<c:param name="page" value="1"></c:param>
+																<c:param name="limit" value="${model.limit}"></c:param>
 															</c:url>
-															<a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip" title="Chi tiết bình luận" 
-																href='${updateNewsURL}'>
-																<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> 
-															</a>
-															<a class="btn btn-sm btn-primary btn-delete" data-toggle="tooltip" title="Xóa bình luận" 
-																style="margin-left: 10px;"  href='#'>
-																<i class="fa-solid fa-trash" style="color: white;"></i>
+															<a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip" title="Xem bình luận" 
+																href='${listCommentURL}'>
+																<i class="fa-regular fa-eye"></i> 
 															</a>
 														</td>
 													</tr>
@@ -112,7 +115,7 @@
 			var totalPage = ${model.totalPage};
 			var limit = ${model.limit}; 
 			window.pagObj = $('#pagination').twbsPagination({
-				totalPages : totalPage,
+				totalPages : totalPage || 1,
 				visiblePages : 6,
 				startPage: currentPage,
 				onPageClick : function(event, page) {
