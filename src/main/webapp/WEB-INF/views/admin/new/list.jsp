@@ -86,7 +86,7 @@
 																<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> 
 															</a>
 															<a class="btn btn-sm btn-primary btn-delete" data-toggle="tooltip" title="Xóa bài viết" 
-																style="margin-left: 10px;"  href='#'>
+																style="margin-left: 10px;"  data-id="${item.id}">
 																<i class="fa-solid fa-trash" style="color: white;"></i>
 															</a>
 														</td>
@@ -162,7 +162,7 @@
         
         
         function warningBeforeDelete(){
-        	swal({
+        	Swal.fire({
         		title: "Bạn có chắc chắn muốn xóa?",
         		text: "Lưu ý xóa sẽ không thể khôi phục lại !",
         		type: "warning",
@@ -170,6 +170,7 @@
         		confirmButtonClass: "btn-success",
         		confirmButtonText: "Xác nhận",
         		cancelButtonText: "Hủy",
+        		width: '500px',
         		closeOnConfirm: false,
         		closeOnCancel: false
         	}).then(function(isConfirm) {
@@ -178,10 +179,32 @@
         				return $(this).val();
         			}).get();
         			deleteNews(ids);
-        			swal("Đã xóa!", "Dữ liệu của bạn đã được xóa.", "success");
         		  }
         		});
         }
+        
+		$(document).on('click', '[data-id]', function() {
+        	
+    		var id = $(this).data('id'); // Lấy giá trị của thuộc tính data-id
+    		var ids = [id];
+    		Swal.fire({
+        		title: "Bạn có chắc chắn muốn xóa?",
+        		text: "Lưu ý xóa sẽ không thể khôi phục lại !",
+        		type: "warning",
+        		showCancelButton: true,
+        		confirmButtonClass: "btn-success",
+        		confirmButtonText: "Xác nhận",
+        		cancelButtonText: "Hủy",
+        		width: '500px',
+        		closeOnConfirm: false,
+        		closeOnCancel: false
+        	}).then(function(result) {
+        		if (result.isConfirmed) {
+        			deleteNews(ids);
+        		  }
+        		});
+		});
+        
         function deleteNews(data){
 			$.ajax({
 	            url: '${newsAPI}',
@@ -189,8 +212,8 @@
 	            contentType: 'application/json',
 	            data: JSON.stringify(data),
 	            success: function (result) {
-	            	swal("", "Dữ liệu của bạn đã được xóa.", "success").then(function(result){
-	            		window.location.href = "${newsURL}?page=1&limit=5&message=delete_success";
+	            	Swal.fire("", "Dữ liệu của bạn đã được xóa.", "success").then(function(result){
+	            		window.location.href = "${newsURL}?page=1&limit=5";
 	            	});
 	            },
 	            error: function (error) {

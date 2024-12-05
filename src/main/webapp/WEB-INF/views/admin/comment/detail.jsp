@@ -39,9 +39,9 @@
 													<i class="fa fa-plus-circle bigger-110 purple"></i>
 												</span>
 											</a>
-											<button id="btnDelete" type="button" 
+											<button id="btnDelete" type="button" onclick="multiDelete()"
 												class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-												data-toggle="tooltip" title='Xóa bình luận'>
+												data-toggle="tooltip" title='Xóa  nhiều bình luận'>
 												<span> <i class="fa-solid fa-trash" style="color: red;"></i>
 												</span>
 											</button>
@@ -175,6 +175,7 @@
         		confirmButtonClass: "btn-success",
         		confirmButtonText: "Xác nhận",
         		cancelButtonText: "Hủy",
+        		width: '500px',
         		closeOnConfirm: false,
         		closeOnCancel: false
         	}).then(function(result) {
@@ -184,9 +185,8 @@
         		});
 		});
         
-        //xóa nhiều bình luận 
-        function warningBeforeDelete(){
-        	swal({
+        function multiDelete(){
+        	Swal.fire({
         		title: "Bạn có chắc chắn muốn xóa?",
         		text: "Lưu ý xóa sẽ không thể khôi phục lại !",
         		type: "warning",
@@ -201,7 +201,7 @@
         			var ids = $('tbody input[type=checkbox]:checked').map(function(){
         				return $(this).val();
         			}).get();
-        			deleteNews(ids);
+        			deleteComment(ids);
         			
         		  }
         		});
@@ -215,12 +215,12 @@
 	            contentType: 'application/json',
 	            data: JSON.stringify(ids),
 	            success: function (result) {
-	            	swal("", "Dữ liệu của bạn đã được xóa.", "success").then(function(result){
+	            	Swal.fire("", "Dữ liệu của bạn đã được xóa.", "success").then(function(result){
 	            		window.location.href = "${commentURL}?newsid="+newsId+"&page=1&limit=5";
 	            	});
 	            },
 	            error: function (error) {
-	            	swal("Lỗi hệ thống!", "", "error");
+	            	Swal.fire("Lỗi hệ thống!", "", "error");
 	            }
 	        });
 		}
@@ -228,17 +228,19 @@
         
         //tạo cmt
         function add(){
-        	swal({
+        	Swal.fire({
         	    title: 'Nhập thông tin',
         	    text: 'Viết bình luận của bạn:',
-        	    input: 'text',
+        	    input: "text",
         	    inputPlaceholder: 'Viết nội dung bình luận',
         	    showCancelButton: true,
         	    confirmButtonText: 'Thêm',
         	    cancelButtonText: 'Hủy',
+        	    width: '500px',
         	    preConfirm: function(inputValue) {
         	        if (!inputValue) {
-        	        	alert("Bạn chưa nhập nội dung");
+        	        	Swal.showValidationMessage('Bạn chưa nhập nội dung');
+        	            return false;
 
         	        }
         	        return inputValue;
@@ -262,7 +264,7 @@
 	            dataType: 'json',
 	            success: function (result) {
 	            	//location.reload();
-	            	swal("", "Đã thêm bình luận của bạn", "success").then(function(result){
+	            	Swal.fire("", "Đã thêm bình luận của bạn", "success").then(function(result){
 	            		window.location.href = "${commentURL}?newsid="+newsId+"&page=1&limit=5";
 	            	});
 	            },

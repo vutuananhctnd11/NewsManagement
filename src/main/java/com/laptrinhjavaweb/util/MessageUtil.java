@@ -10,19 +10,9 @@ public class MessageUtil {
 
 	public Map<String, String> getMessage (String message){
 		Map<String, String> result = new HashMap<>();
-		if (message.equals("update_success")) {
-			result.put("message", "Update success");
-			result.put("alert", "success");
-		} else if (message.equals("insert_success")) {
-			result.put("message", "Insert success");
-			result.put("alert", "success");
-		} else if (message.equals("error_system")) {
-			result.put("message", "ERROR SYSTEM");
+		if (message.equals("error_system")) {
+			result.put("message", "Đã xảy ra lỗi hệ thống, không thực hiện được");
 			result.put("alert", "danger");
-		}
-		else if (message.equals("delete_success")) {
-			result.put("message", "Xóa thành công");
-			result.put("alert", "success");
 		}
 		return result;
 	}

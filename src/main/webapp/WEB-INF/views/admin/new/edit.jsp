@@ -2,6 +2,7 @@
 <%@include file="/common/taglib.jsp"%>
 <c:url var="newsURL" value="/quantri/baiviet/danhsach"/>
 <c:url var="newsAPI" value="/api/news"/>
+<c:url var="uploadAPI" value="/api/uploadfile"/>
 <c:url var="editNewsURL" value="/quantri/baiviet/chinhsua"/>
 <html>
 <head>
@@ -67,7 +68,11 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Ảnh đại diện </label>
 								<div class="col-sm-9">
-									<input type="file" class="col-xs-10 col-sm-5" id="thumbnail" name="thumbnail" />
+									<input type="file" class="col-xs-10 col-sm-5" id="thumbnail" name="thumbnail"/>
+								</div>
+								<div id="imgContainer">
+									<img id="previewImg" src="<c:url value='/${model.thumbnail}' />"
+									 alt="Ảnh đại diện của bài viết" style="width: 500px; margin: 10px 0px 0px 15px;">
 								</div>
 							</div>
 							<div class="form-group">
@@ -92,25 +97,30 @@
 							<div class="clearfix form-actions">
 								<div class="col-md-offset-3 col-md-9">
 									<c:if test="${not empty model.id}">
-										<button class="btn btn-info" type="button" id="btnAddOrUpdateNews">
+										<button class="btn btn-success" type="button" id="btnAddOrUpdateNews">
 											<i class="ace-icon fa fa-check bigger-110"></i>
 											Cập nhật bài viết
 										</button>
 										&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-										<button class="btn" type="reset">
+										<button class="btn btn-danger" type="reset">
 											<i class="ace-icon fa fa-undo bigger-110"></i>
 											Hủy chỉnh sửa
 										</button>
 									</c:if>
 									<c:if test="${empty model.id}">
-										<button class="btn btn-info" type="button" id="btnAddOrUpdateNews">
+										<button class="btn btn-success" type="button" id="btnAddOrUpdateNews">
 											<i class="ace-icon fa fa-check bigger-110"></i>
 											Thêm bài viết
 										</button>
 										&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-										<button class="btn" type="reset">
+										<button class="btn btn-danger" type="reset">
 											<i class="ace-icon fa fa-undo bigger-110"></i>
 											Hủy
+										</button>
+										&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+										<button class="btn btn-primary" type="button">
+											<i class="fa-regular fa-file-word"></i>
+											Thêm bằng file Word
 										</button>
 									</c:if>
 
@@ -125,21 +135,26 @@
 		</div>
 	</div>
 	<script>
-	$(document).ready(function(){
-		CKEDITOR.replace('content');
-	});
+		$(document).ready(function(){
+			CKEDITOR.replace('content');
+			$('#thumbnail').on('change', function(event) {
+                var file = event.target.files[0];
+
+                if (file && file.type.startsWith('image/')) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#previewImg').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert("Vui lòng chọn một file ảnh.");
+                }
+            });
+		});
 		
 		$('#btnAddOrUpdateNews').click(function (e) {
 		    e.preventDefault();
 		    
-		    //synchronous data from ckeditor to text area
-		    for (let instance in CKEDITOR.instances) {
-		        CKEDITOR.instances[instance].updateElement();
-		    }
-			
-			var editorContent = CKEDITOR.instances['content'].getData();
-		    
-
 			// validate data
 		    if ($('#categoryCode').val() == "") {
 		    	alert("Chưa chọn thể loại bài viết");
@@ -153,26 +168,66 @@
 		    	alert("Chưa điền mô tả ngắn của bài viết");
 		    	return;
 		    }
+		    CKEDITOR.instances['content'].updateElement();
 		    if ($('#content').val() == "") {
 		    	alert("Chưa điền nội dung bài viết");
 		    	return;
 		    }
+		    
 			
-			//put data to excute
-		    var data = {};
-		    var formData = $('#formSubmit').serializeArray();
-		    $.each(formData, function(i,v) {
-		    	data[""+v.name+""] = v.value;
-		    });
-		    var id = $('#newsId').val();
-		    if(id == ""){
-		    	addNews(data);
-		    } else {
-		    	updateNews(data);
-		    }
-		    
-		    
+		    //xử lý ảnh truyền vào
+		    var files = $('#thumbnail').prop('files');
+   			 if (files && files.length > 0) {
+        		var file = files[0];
+        		var formData = new FormData();
+       	        formData.append("file", file);
+       	        uploadFile(formData);
+   			 } else {
+   				var id = $('#newsId').val();
+   	 		    if(id == ""){
+   	 		    	alert("chưa chọn ảnh đại diện cho bài viết!");
+   	 		    	return
+   	 		    }
+   				var data = {};
+   	 		    var formData = $('#formSubmit').serializeArray();
+   	 		    $.each(formData, function(i,v) {
+   	 		    	data[""+v.name+""] = v.value;
+   	 		    });
+   	 		    data["thumbnail"] = "${model.thumbnail}";
+
+   	 		    updateNews(data);
+
+   			 }	
 		});
+		
+		function uploadFile (formData){
+			$.ajax({
+   	            url: '${uploadAPI}',
+   	            type: 'POST',
+   	            data: formData,
+   	            processData: false,
+   	            contentType: false, 
+   	            success: function(uploadResponse) {
+   	            	
+   	            	var fileUrl = uploadResponse;
+   	            	var data = {};
+	   	 		    var formData = $('#formSubmit').serializeArray();
+	   	 		    $.each(formData, function(i,v) {
+	   	 		    	data[""+v.name+""] = v.value;
+	   	 		    });
+	   	 		    data["thumbnail"] = fileUrl;
+	   	 		    var id = $('#newsId').val();
+	   	 		    if(id == ""){
+	   	 		    	addNews(data);
+	   	 		    } else {
+	   	 		    	updateNews(data);
+	   	 		    }
+   	            }, 
+	   	         error: function(error) {
+	                 alert("Error uploading file: " + error.responseText);
+	             }
+			});
+		}
 		
 		function addNews(data){
 			$.ajax({
@@ -182,13 +237,17 @@
 	            data: JSON.stringify(data),
 	            dataType: 'json',
 	            success: function (result) {
-	            	window.location.href = "${editNewsURL}?id="+result.id+"&message=insert_success";
+	            	Swal.fire("", "Đã thêm bài viết thành công", "success").then(function(apply){
+	            		window.location.href = "${editNewsURL}?id="+result.id;
+	            	});
+	            	
 	            },
 	            error: function (error) {
 	            	window.location.href = "${newsURL}?page=1&limit=5&message=error_system";
 	            }
 	        });
 		}
+		
 		function updateNews(data){
 			$.ajax({
 	            url: '${newsAPI}',
@@ -197,13 +256,17 @@
 	            data: JSON.stringify(data),
 	            dataType: 'json',
 	            success: function (result) {
-	            	window.location.href = "${editNewsURL}?id="+result.id+"&message=update_success";
+	            	Swal.fire("", "Cập nhật bài viết thành công", "success").then(function(apply){
+	            		window.location.href = "${editNewsURL}?id="+result.id;
+	            	});
 	            },
 	            error: function (error) {
 	            	window.location.href = "${editNewsURL}?id="+result.id+"&message=error_system";
 	            }
 	        });		
 		}
+		
+		
 	</script>
 </body>
 </html>

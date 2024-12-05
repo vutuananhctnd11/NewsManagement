@@ -83,6 +83,7 @@ public class NewService implements INewService {
 	@Transactional
 	public NewsDTO save(NewsDTO dto) {
 		NewsEntity newsEntity = new NewsEntity();
+		
 		CategoryEntity category = categoryRepository.findOneByCode(dto.getCategoryCode());
 		
 		if (dto.getId() !=null ) {

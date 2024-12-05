@@ -1,0 +1,12 @@
+.swal2-input {
+        font-size: 18px !important; /* Ô input chữ to */
+    }
+.swal2-title {
+    font-size: 20px !important; /* Tùy chỉnh kích thước chữ tiêu đề */
+}
+.swal2-html-container {
+    font-size: 20px !important; /* Tùy chỉnh kích thước chữ nội dung */
+}
+.swal2-confirm, .swal2-cancel {
+        font-size: 18px !important; /* Nút bấm chữ to hơn */
+    }
