@@ -21,11 +21,11 @@
 					}
 				</script>
 	
-				<ul class="breadcrumb">
+				<ul class="breadcrumb" style="font-size: 15px">
 					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Trang chủ</a>
 					</li>
 	
-					<li><a href="#">Quản lý bài viết</a></li>
+					<li><a href="<c:url value='/quantri/baiviet/danhsach' />">Danh sách bài viết</a></li>
 					<li class="active">Thêm bài viết mới</li>
 				</ul>
 				<!-- /.breadcrumb -->
@@ -118,10 +118,12 @@
 											Hủy
 										</button>
 										&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-										<button class="btn btn-primary" type="button">
+										<button class="btn btn-primary" type="button" id="openWordFile">
 											<i class="fa-regular fa-file-word"></i>
 											Thêm bằng file Word
 										</button>
+										<input type="file" id="wordInput" style="display: none;" accept=".doc, .docx" >
+										<p class="mt-3" id="wordName" style="margin-left: 280px; font-size: 18px;"></p>
 									</c:if>
 
 									
@@ -150,7 +152,22 @@
                     alert("Vui lòng chọn một file ảnh.");
                 }
             });
+			
+			// Khi nhấn nút, kích hoạt input file
+            $('#openWordFile').on('click', function() {
+                $('#wordInput').click();
+            });
+            $('#wordInput').on('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    $('#wordName').text("File đã chọn: " + file.name);
+                } else {
+                    $('#wordName').text("Chưa chọn file nào.");
+                }
+            });
 		});
+		
+		
 		
 		$('#btnAddOrUpdateNews').click(function (e) {
 		    e.preventDefault();
@@ -224,7 +241,7 @@
 	   	 		    }
    	            }, 
 	   	         error: function(error) {
-	                 alert("Error uploading file: " + error.responseText);
+	                 alert("Lỗi upload file: " + error.responseText);
 	             }
 			});
 		}

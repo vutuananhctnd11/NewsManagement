@@ -1,14 +1,20 @@
 package com.laptrinhjavaweb.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.laptrinhjavaweb.converter.NewsConverter;
 import com.laptrinhjavaweb.dto.NewsDTO;
@@ -58,36 +64,16 @@ public class NewService implements INewService {
 
 	@Override
 	@Transactional
-	public NewsDTO insert(NewsDTO dto) {
-		// TODO Auto-generated method stub
-		CategoryEntity category = categoryRepository.findOneByCode(dto.getCategoryCode());
-		NewsEntity newsEntity = newsConverter.toEntity(dto);
-		newsEntity.setCategory(category);
-		newsEntity = newsRepository.save(newsEntity);
-		return newsConverter.toDTO(newsEntity);
-	}
-
-	@Override
-	@Transactional
-	public NewsDTO update(NewsDTO dto) {
-		// TODO Auto-generated method stub
-		NewsEntity oldNews = newsRepository.findOne(dto.getId());
-		CategoryEntity category = categoryRepository.findOneByCode(dto.getCategoryCode());
-		oldNews.setCategory(category);
-		NewsEntity updateNews = newsConverter.toEntity(oldNews, dto);
-		updateNews = newsRepository.save(updateNews);
-		return newsConverter.toDTO(updateNews);
-	}
-
-	@Override
-	@Transactional
-	public NewsDTO save(NewsDTO dto) {
+	public NewsDTO save(NewsDTO dto, HttpServletRequest request) {
 		NewsEntity newsEntity = new NewsEntity();
 		
 		CategoryEntity category = categoryRepository.findOneByCode(dto.getCategoryCode());
 		
 		if (dto.getId() !=null ) {
 			NewsEntity oldNews = newsRepository.findOne(dto.getId());
+			String filePath = request.getServletContext().getRealPath(oldNews.getThumbnail());
+			File file = new File(filePath);
+			file.delete();
 			oldNews.setCategory(category);
 			newsEntity = newsConverter.toEntity(oldNews, dto);
 		} else {
@@ -102,6 +88,10 @@ public class NewService implements INewService {
 	public void delete(long[] ids) {
 		// TODO Auto-generated method stub
 		for (long id : ids) {
+			List<CommentEntity> listComment = commentRepository.findByNewsId(id);
+			for (CommentEntity item : listComment) {
+				commentRepository.delete(item);
+			}
 			newsRepository.delete(id);
 		}
 	}
@@ -119,11 +109,39 @@ public class NewService implements INewService {
 				}
 			}
 			result.put(news.getId(), totalComment);
-			totalComment=0;
+			totalComment= 0;
 		}
 
 		return result;
 	}
 
-	
+	@Override
+	public ResponseEntity<?> uploadFile(MultipartFile file, HttpServletRequest request) {
+		String timestamp="";
+		String filePath = "";
+		
+		if (file == null || file.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File không được để trống!");
+	    }
+		String fileName = file.getOriginalFilename();
+	    if (fileName == null || (!fileName.endsWith(".jpg") && !fileName.endsWith(".png") && !fileName.endsWith(".jpeg"))) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	        					 .header("Content-Type", "text/plain; charset=UTF-8")
+	        					 .body("Chỉ chấp nhận file định dạng .jpg .jpeg hoặc .png!");
+	    }
+		
+		if(file!=null) {
+			try {
+			String uploadRootPath = request.getServletContext().getRealPath("template/images");
+			timestamp = String.valueOf(System.currentTimeMillis());
+			File destination = new File(uploadRootPath+"/"+timestamp+ file.getOriginalFilename());
+			filePath =  "template/images/"+timestamp+file.getOriginalFilename();
+			file.transferTo(destination);
+			} catch (Exception e) {
+		        e.printStackTrace();
+		    }
+	    }
+		return ResponseEntity.ok(filePath);
+	}
+
 }

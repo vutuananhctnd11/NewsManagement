@@ -17,8 +17,8 @@
 
 			<div class="main-content-inner">
 				<div class="breadcrumbs ace-save-state" id="breadcrumbs">
-					<ul class="breadcrumb">
-						<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Trang chủ</a></li>
+					<ul class="breadcrumb" style="font-size: 14px;">
+						<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value='/quantri/trangchu' />">Trang chủ</a></li>
 						<li><a href="#">Danh sách bài viết</a></li>
 					</ul>
 					<!-- /.breadcrumb -->
@@ -85,7 +85,7 @@
 																href='${updateNewsURL}'>
 																<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> 
 															</a>
-															<a class="btn btn-sm btn-primary btn-delete" data-toggle="tooltip" title="Xóa bài viết" 
+															<a class="btn btn-sm btn-primary btn-delete" data-toggle="tooltip" title="Xóa nhiều bài viết" 
 																style="margin-left: 10px;"  data-id="${item.id}">
 																<i class="fa-solid fa-trash" style="color: white;"></i>
 															</a>
@@ -164,13 +164,13 @@
         function warningBeforeDelete(){
         	Swal.fire({
         		title: "Bạn có chắc chắn muốn xóa?",
-        		text: "Lưu ý xóa sẽ không thể khôi phục lại !",
-        		type: "warning",
+        		text: "Các bình luận sẽ bị xóa theo và không thể khôi phục lại !",
+        		icon: "warning",
         		showCancelButton: true,
         		confirmButtonClass: "btn-success",
         		confirmButtonText: "Xác nhận",
         		cancelButtonText: "Hủy",
-        		width: '500px',
+        		width: '550px',
         		closeOnConfirm: false,
         		closeOnCancel: false
         	}).then(function(isConfirm) {
@@ -189,13 +189,13 @@
     		var ids = [id];
     		Swal.fire({
         		title: "Bạn có chắc chắn muốn xóa?",
-        		text: "Lưu ý xóa sẽ không thể khôi phục lại !",
-        		type: "warning",
+        		text: "Các bình luận sẽ bị xóa theo và không thể khôi phục lại !",
+        		icon: "warning",
         		showCancelButton: true,
         		confirmButtonClass: "btn-success",
         		confirmButtonText: "Xác nhận",
         		cancelButtonText: "Hủy",
-        		width: '500px',
+        		width: '550px',
         		closeOnConfirm: false,
         		closeOnCancel: false
         	}).then(function(result) {
