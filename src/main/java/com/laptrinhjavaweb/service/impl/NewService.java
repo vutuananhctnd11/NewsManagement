@@ -1,6 +1,9 @@
 package com.laptrinhjavaweb.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +11,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -129,7 +135,6 @@ public class NewService implements INewService {
 	        					 .header("Content-Type", "text/plain; charset=UTF-8")
 	        					 .body("Chỉ chấp nhận file định dạng .jpg .jpeg hoặc .png!");
 	    }
-		
 		if(file!=null) {
 			try {
 			String uploadRootPath = request.getServletContext().getRealPath("template/images");
@@ -144,4 +149,97 @@ public class NewService implements INewService {
 		return ResponseEntity.ok(filePath);
 	}
 
+	@Override
+	public ResponseEntity<?> inputFileWord(MultipartFile file, HttpServletRequest request) {
+		String timestamp="";
+		String filePath = "";
+		
+		if (file == null || file.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File không được để trống!");
+	    }
+		String fileName = file.getOriginalFilename();
+	    if (fileName == null || (!fileName.endsWith(".doc") && !fileName.endsWith(".docx"))) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	        					 .header("Content-Type", "text/plain; charset=UTF-8")
+	        					 .body("Chỉ được nhập file Word có định dạng .doc hoặc .docx !");
+	    }
+		if(file!=null) {
+			try {
+			String uploadRootPath = request.getServletContext().getRealPath("template/fileWord");
+			timestamp = String.valueOf(System.currentTimeMillis());
+			File destination = new File(uploadRootPath+"/"+timestamp+ file.getOriginalFilename());
+			filePath =  request.getServletContext().getRealPath("template/fileWord/")+timestamp+file.getOriginalFilename();
+			file.transferTo(destination);
+			} catch (Exception e) {
+		        e.printStackTrace();
+		    }
+	    }
+		
+		
+		//xử lý file word
+		StringBuilder content = new StringBuilder();
+		NewsDTO result = new NewsDTO();
+		
+		try {
+			FileInputStream fileIn = new FileInputStream(filePath);
+			XWPFDocument document = new XWPFDocument(fileIn);
+			
+			List<XWPFParagraph> paragraphs = new ArrayList<>(document.getParagraphs());
+			
+			//lấy title
+			XWPFParagraph getText = paragraphs.get(0);
+			String title ="";
+			for (XWPFRun run : getText.getRuns()) {
+				title += run.getText(0);
+			}
+			result.setTitle(title);
+			paragraphs.remove(0);
+			//lấy shortDescription
+			getText = paragraphs.get(0);
+			String shortDescription ="";
+			for (XWPFRun run : getText.getRuns()) {
+				shortDescription += run.getText(0);
+			}
+			result.setShortDescription(shortDescription);
+			paragraphs.remove(0);
+			
+			//lấy content
+			for (XWPFParagraph paragraph : paragraphs) {
+				content.append("<p>");
+				for(XWPFRun run : paragraph.getRuns()) {
+					String text = run.getText(0);
+					String fontFamily = run.getFontFamily();
+					int fontSize = run.getFontSize();
+					String color = run.getColor();
+                    boolean isBold = run.isBold();
+                    boolean isItalic = run.isItalic();
+                    
+                    if (text != null) {
+                    	content.append("<span style=\"");
+                    	if (fontFamily != null) content.append("font-family: ").append(fontFamily).append("; ");
+                    	if (fontSize > 0) content.append("font-size: ").append(fontSize).append("pt; ");
+                    	if (color != null) content.append("color: #").append(color).append("; ");
+                    	if (isBold) content.append("font-weight: bold; ");
+                    	if (isItalic) content.append("font-style: italic; ");
+                    }
+					content.append("\">").append(text).append("</span>");
+				}
+				content.append("</p>");
+			}
+			document.close();
+			File deleteFile = new File(filePath);
+			deleteFile.delete();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		result.setContent(content.toString());
+			
+		return ResponseEntity.ok(result);
+	}
 }

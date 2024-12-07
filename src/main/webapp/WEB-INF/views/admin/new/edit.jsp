@@ -3,6 +3,7 @@
 <c:url var="newsURL" value="/quantri/baiviet/danhsach"/>
 <c:url var="newsAPI" value="/api/news"/>
 <c:url var="uploadAPI" value="/api/uploadfile"/>
+<c:url var="inputFileWordAPI" value="/api/inputfileword"/>
 <c:url var="editNewsURL" value="/quantri/baiviet/chinhsua"/>
 <html>
 <head>
@@ -139,6 +140,7 @@
 	<script>
 		$(document).ready(function(){
 			CKEDITOR.replace('content');
+			
 			$('#thumbnail').on('change', function(event) {
                 var file = event.target.files[0];
 
@@ -157,16 +159,8 @@
             $('#openWordFile').on('click', function() {
                 $('#wordInput').click();
             });
-            $('#wordInput').on('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    $('#wordName').text("File đã chọn: " + file.name);
-                } else {
-                    $('#wordName').text("Chưa chọn file nào.");
-                }
-            });
+            
 		});
-		
 		
 		
 		$('#btnAddOrUpdateNews').click(function (e) {
@@ -283,6 +277,41 @@
 	        });		
 		}
 		
+		// nhập vào file wword
+		$('#wordInput').on('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                $('#wordName').text("File đã chọn: " + file.name);
+            } else {
+                $('#wordName').text("Chưa chọn file nào.");
+            }
+            var formData = new FormData();
+   	        formData.append("file", file);
+   	     	inputFileWord(formData);
+            
+        });
+		
+		function inputFileWord (formData) {
+			$.ajax ({
+				url: '${inputFileWordAPI}',
+				type: 'POST',
+   	            data: formData,
+   	            processData: false,
+   	            contentType: false, 
+   	         	success: function (result) {
+	            	$('#title').val(result.title);
+	            	$('#shortDescription').val(result.shortDescription);
+	            	$('#content').val(result.content);
+	            	CKEDITOR.instances['content'].setData(result.content);
+	            	console.log(result.content);
+	            	setCKEditorContent(result.content);
+	            	Swal.fire("", "Thêm file thành công !", "success")
+	            },
+	            error: function (error) {
+	            	Swal.fire("Lỗi!", "Xử lý file thất bại!", "error");
+	            }
+			});
+		}
 		
 	</script>
 </body>

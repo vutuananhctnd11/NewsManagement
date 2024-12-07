@@ -1,7 +1,5 @@
 package com.laptrinhjavaweb.api.admin;
 
-import java.io.File;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,10 @@ public class NewsAPI {
 	@PostMapping("/api/uploadfile")
 	public ResponseEntity<?> uploadfile (@RequestParam("file") MultipartFile file, HttpServletRequest request){
 		return newsService.uploadFile(file, request);
+	}
+	@PostMapping("/api/inputfileword")
+	public ResponseEntity<?> inputFileWord (@RequestParam("file") MultipartFile file, HttpServletRequest request){
+		return newsService.inputFileWord(file, request);
 	}
 	
 }

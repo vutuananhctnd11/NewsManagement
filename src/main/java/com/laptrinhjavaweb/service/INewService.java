@@ -19,5 +19,6 @@ public interface INewService {
 	void delete (long[] ids);
 	Map<Long, Long> getTotalCommentOfNews (NewsDTO newsdto);
 	ResponseEntity<?> uploadFile (MultipartFile file, HttpServletRequest request);
+	ResponseEntity<?> inputFileWord (MultipartFile file, HttpServletRequest request);
 	
 }
