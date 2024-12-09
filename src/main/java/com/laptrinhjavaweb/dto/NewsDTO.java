@@ -10,7 +10,6 @@ public class NewsDTO extends AbstractDTO<NewsDTO> {
 	private String content;
 	private Long categoryId;
 	private String categoryCode;
-	private MultipartFile fileImg;
 	
 	public String getTitle() {
 		return title;
@@ -47,12 +46,6 @@ public class NewsDTO extends AbstractDTO<NewsDTO> {
 	}
 	public void setCategoryCode(String categoryCode) {
 		this.categoryCode = categoryCode;
-	}
-	public MultipartFile getFileImg() {
-		return fileImg;
-	}
-	public void setFileImg(MultipartFile fileImg) {
-		this.fileImg = fileImg;
 	}
 	
 }

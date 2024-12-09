@@ -303,12 +303,11 @@
 	            	$('#shortDescription').val(result.shortDescription);
 	            	$('#content').val(result.content);
 	            	CKEDITOR.instances['content'].setData(result.content);
-	            	console.log(result.content);
-	            	setCKEditorContent(result.content);
 	            	Swal.fire("", "Thêm file thành công !", "success")
 	            },
 	            error: function (error) {
 	            	Swal.fire("Lỗi!", "Xử lý file thất bại!", "error");
+	            	console.log(error);
 	            }
 			});
 		}

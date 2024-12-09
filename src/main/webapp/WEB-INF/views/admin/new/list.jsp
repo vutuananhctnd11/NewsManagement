@@ -56,10 +56,11 @@
 							<div class="row">
 								<div class="col-xs-12">
 									<div class="table-responsive">
-										<table class="table table-bordered">
+										<table class="table table-bordered" id="dataTable">
 											<thead>
 												<tr>
-												<th><input type="checkbox" id="checkAll"></th>
+													<th><input type="checkbox" id="checkAll"></th>
+													<th style="text-align: center; font-size: 16px;width: 35px">STT</th>
 													<th style="text-align: center; font-size: 16px;">Tên bài viết</th>
 													<th style="text-align: center; font-size: 16px;width: 8%;">Thể loại  </th>
 													<th style="text-align: center; font-size: 16px;">Mô tả ngắn</th>
@@ -70,6 +71,7 @@
 												<c:forEach var="item" items="${model.listResult}">
 													<tr style="font-size: 16px;">
 													<td><input type="checkbox" class="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
+													<td style="text-align: center;"></td>
 														<td>${item.title}</td>
 														<td>
 															<c:forEach var="entry" items="${categories}">
@@ -98,8 +100,8 @@
 										<ul class="pagination" id="pagination"></ul>
 										<select class="form-control"  style="width: auto; ; margin-left: 5px" id="chooseLimit" onchange="getChooseLimit()">
 											<option value="5">5 bài/Trang</option>
-											<option value="4">4 bài/Trang</option>
-											<option value="3">3 bài/Trang</option>
+											<option value="8">8 bài/Trang</option>
+											<option value="10">10 bài/Trang</option>
 										</select>
 										</div>
 										<input type="hidden" value="" id="page" name="page"/>
@@ -115,6 +117,8 @@
 	</div>
 	<!-- /.main-content -->
 	<script>
+	var page = ${model.page};
+	var limit = ${model.limit};
 	//hàm config checkbox
     $(document).ready(function() {
 	    $('#checkAll').on('change', function() {
@@ -124,6 +128,10 @@
 	            $('.checkbox').prop('checked', false);
 	        }
 	    });
+	    //hiển thị STT
+	    $("#dataTable tbody tr").each(function (index) {
+            $(this).find("td:eq(1)").text( (page-1)*limit + index + 1);
+        });
 	});
 	
 	

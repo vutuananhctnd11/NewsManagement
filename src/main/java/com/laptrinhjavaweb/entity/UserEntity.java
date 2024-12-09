@@ -24,7 +24,22 @@ public class UserEntity extends BaseEntity {
 
 	@Column(name = "fullname")
 	private String fullName;
+	
+	@Column(name = "birthday")
+	private String birthday;
+	
+	@Column(name = "gender")
+	private String Gender;
+	
+	@Column(name = "email")
+	private String email;
 
+	@Column(name = "phonenumber")
+	private String phoneNumber;
+	
+	@Column(name = "facebook")
+	private String facebook;
+	
 	@Column
 	private Integer status;
 
@@ -82,6 +97,46 @@ public class UserEntity extends BaseEntity {
 
 	public void setComments(List<CommentEntity> comments) {
 		this.comments = comments;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getGender() {
+		return Gender;
+	}
+
+	public void setGender(String gender) {
+		Gender = gender;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getFacebook() {
+		return facebook;
+	}
+
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
 	}
 	
 	

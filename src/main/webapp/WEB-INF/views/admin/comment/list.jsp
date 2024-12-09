@@ -50,9 +50,10 @@
 							<div class="row">
 								<div class="col-xs-12">
 									<div class="table-responsive">
-										<table class="table table-bordered">
+										<table class="table table-bordered" id="dataTable">
 											<thead>
 												<tr>
+													<th style="text-align: center; font-size: 16px;">STT</th>
 													<th style="text-align: center; font-size: 16px;">Tên bài viết</th>
 													<th style="text-align: center; font-size: 16px;">Thể loại  </th>
 													<th style="text-align: center; font-size: 16px;">Tổng số bình luận</th>
@@ -63,8 +64,9 @@
 											<tbody>
 												<c:forEach var="item" items="${model.listResult}">
 													<tr style="font-size: 16px;">
+														<td style="text-align: center;width:35px;"></td>
 														<td>${item.title}</td>
-														<td style="text-align: center;">
+														<td>
 															<c:forEach var="entry" items="${categories}">
 																<c:if test="${entry.key eq item.categoryCode}">${entry.value}</c:if>
 															</c:forEach>
@@ -110,6 +112,15 @@
 	</div>
 	<!-- /.main-content -->
 	<script>
+		var page = ${model.page};
+		var limit = ${model.limit};
+		$(document).ready(function () {
+	        $("#dataTable tbody tr").each(function (index) {
+	            $(this).find("td:first").text( (page-1)*limit + index + 1);
+	        });
+	    });
+	
+	
 		$(function() {
 			var currentPage = ${model.page};
 			var totalPage = ${model.totalPage};

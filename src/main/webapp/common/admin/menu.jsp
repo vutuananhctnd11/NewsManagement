@@ -75,23 +75,24 @@
 		</li>
 		<li >
             <a href="#" class="dropdown-toggle">
-                <i class="fa-regular fa-newspaper" style="margin: 0px 5px; font-size: 18px;"></i>
-                <span class="menu-text">Quản lý độc giả</span>  
+                <i class="fa-regular fa-user" style="margin: 0px 5px; font-size: 18px;"></i>
+                <span class="menu-text">Quản lý tài khoản</span>  
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
                 <li>
-                    <a href="<c:url value='/quantri/baiviet/danhsach?page=1&limit=5'/>">
-                        <i class="fa-solid fa-list" style="margin: 0px 5px;"></i>
-                        Danh sách độc giả 
+                    <a href="<c:url value='/quantri/taikhoan/thongtin'/>">
+                    <i class="fa-solid fa-user" style="margin: 0px 5px;"></i>
+
+                        Thông tin tài khoản
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li>
-                    <a href="<c:url value='/quantri/baiviet/chinhsua'/>">
-                    	<i class="fa-solid fa-square-plus" style="margin: 0px 5px;"></i>
-                        Thêm độc giả mới
+                    <a href="<c:url value='/quantri/taikhoan/danhsach?page=1&limit=5'/>">
+                    	<i class="fa-solid fa-list-ul" style="margin: 0px 5px;"></i>
+                        Danh sách tài khoản
                     </a>
                     <b class="arrow"></b>
                 </li>

@@ -24,6 +24,18 @@
 
 	<!-- Ckeditor -->
     <script src="<c:url value='/template/ckeditor/ckeditor.js' />"></script>
+    
+    
+    <!-- Bootstrap CSS và Datepicker CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+<!-- jQuery và Datepicker JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    
+    
+    
+    
 </head>
 <body class="no-skin">
 	<!-- header -->
@@ -49,7 +61,7 @@
 		</a>
 	</div>
 	
-	<script src="<c:url value='/template/admin/paging/jquery.twbsPagination.js' />"></script>
+	<script src="<c:url value='/template/admin/paging/jquery.twbsPagination.js' /> "></script>
 	<script src="<c:url value='/template/admin/assets/js/bootstrap.min.js' />"></script>
 	<script src="<c:url value='/template/admin/assets/js/jquery-ui.custom.min.js' />"></script>
 	<script src="<c:url value='/template/admin/assets/js/jquery.ui.touch-punch.min.js' />"></script>
@@ -64,6 +76,8 @@
 	
 	<!-- page specific plugin scripts -->
 	<script src="<c:url value='/template/admin/assets/js/jquery-ui.min.js'/>"></script>
+	
+	<!-- JS of Profile -->
 	
 	
 </body>
