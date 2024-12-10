@@ -1,9 +1,14 @@
 package com.laptrinhjavaweb.controller.admin;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.laptrinhjavaweb.constant.SystemConstant;
@@ -11,6 +16,7 @@ import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dto.UserDTO;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.repository.UserRepository;
+import com.laptrinhjavaweb.service.IUserService;
 import com.laptrinhjavaweb.util.SecurityUtils;
 
 @Controller(value = "accountControllerOfAdmin")
@@ -21,6 +27,9 @@ public class AccountController {
 	
 	@Autowired
 	private UserConverter userConverter;
+	
+	@Autowired
+	private IUserService userService;
 	
 	@RequestMapping(value = "/quantri/taikhoan/thongtin", method = RequestMethod.GET)
 	public ModelAndView AccountProfile () {
@@ -33,8 +42,26 @@ public class AccountController {
 	}
 	
 	@RequestMapping(value = "/quantri/taikhoan/danhsach", method = RequestMethod.GET)
-	public ModelAndView listAccount () {
+	public ModelAndView listAccount (@RequestParam("page") int page, @RequestParam("limit") int limit, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("/admin/account/list");
+		UserDTO model = new UserDTO();
+		model.setPage(page);
+		model.setLimit(limit);
+		Pageable pageable = new PageRequest(page-1, limit);
+		model.setListResult(userService.findAll(pageable));
+		model.setTotalItem(userService.totalUser());
+		int totalPage = (int) Math.ceil((double) model.getTotalItem() / model.getLimit());
+		model.setTotalPage(totalPage);
+		mav.addObject("model", model);
+		return mav;
+	}
+	
+	@RequestMapping(value="/quantri/taikhoan/danhsach/chitiet")
+	public ModelAndView AccountDetail (@RequestParam("userid") long userId) {
+		ModelAndView mav = new ModelAndView("/admin/account/detail");
+		UserEntity entity = userRepository.findOne(userId);
+		UserDTO model = userConverter.toDTO(entity);
+		mav.addObject("model", model);
 		return mav;
 	}
 

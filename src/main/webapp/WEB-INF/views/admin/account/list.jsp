@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <c:url var="commentAPI" value="/api/comment"/>
-<c:url var="commentURL" value="/quantri/binhluan/chitiet"/>
+<c:url var="listAccountURL" value="/quantri/taikhoan/dahsach"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -59,7 +59,6 @@
 													<th style="text-align: center; font-size: 16px;">STT</th>
 													<th style="text-align: center; font-size: 16px;">Tên đăng nhập</th>
 													<th style="text-align: center; font-size: 16px;">Họ và tên</th>
-													<th style="text-align: center; font-size: 16px;">Giới tính</th>
 													<th style="text-align: center; font-size: 16px;">Vai trò</th>
 													<th style="text-align: center; font-size: 16px;">Trạng thái</th>
 													<th style="text-align: center; font-size: 16px;">Thao tác</th>
@@ -68,19 +67,26 @@
 											<tbody>
 												<c:forEach var="item" items="${model.listResult}">
 													<tr style="font-size: 16px;">
-														<td><input type="checkbox" class="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
-														<td></td>
+														<td style="width: 30px;"><input type="checkbox" class="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
+														<td style="text-align: center;width: 35px;"></td>
 														<td style="text-align: center;">${item.userName}</td>
-														<td>${item.content}</td>
-														<td style="text-align: center;">${item.likeComment}</td>
-														<td style="text-align: center;">${item.createdDate}</td>
+														<td style="text-align: center;">${item.fullName}</td>
+														<td style="text-align: center;">${item.roleName}</td>
+														<td style="text-align: center;">
+															<c:if test="${item.status == 1}">Hoạt động</c:if>
+															<c:if test="${item.status == 0}">Bị khóa</c:if>
+														</td>
 														<td style="display: flex; justify-content: center;">
-														<c:url var="listCommentURL" value="/quantri/binhluan/chitiet">
-																<c:param name="newsid" value="${model.id}"></c:param>
+														<c:url var="accountDetailURL" value="/quantri/taikhoan/danhsach/chitiet">
+																<c:param name="userid" value="${item.id}"></c:param>
 															</c:url>
-															<a class="btn btn-sm btn-primary btn-delete" data-toggle="tooltip" title="Xóa bình luận" 
-																data-id="${item.id}">
-																<i class="fa-solid fa-trash" aria-hidden="true"></i> 
+															<a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip" title="Xem chi tiết" 
+																href='${accountDetailURL}'>
+																<i class="fa-regular fa-eye"></i> 
+															</a>
+															<a class="btn btn-sm btn-primary btn-delete" data-toggle="tooltip" title="Khóa tài khoản" 
+																data-id="${item.id}" style="margin-left: 20px;">
+																<i class="fas fa-lock"></i> 
 															</a>
 														</td>
 													</tr>
@@ -91,8 +97,8 @@
 										<ul class="pagination" id="pagination"></ul>
 										<select class="form-control"  style="width: auto; ; margin-left: 5px" id="chooseLimit" onchange="getChooseLimit()">
 											<option value="5">5/Trang</option>
-											<option value="8">8/Trang</option>
-											<option value="10">10/Trang</option>
+											<option value="4">4/Trang</option>
+											<option value="3">3/Trang</option>
 										</select>
 										</div>
 										<input type="hidden" value="" id="page" name="page"/>
