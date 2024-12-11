@@ -27,26 +27,9 @@
 						<div class="col-xs-12">
 							<div class="widget-box table-filter">
 								<div class="table-btn-controls">
-									<div class="pull-right tableTools-container" style="display: flex;">
-									
-										<div class="dt-buttons btn-overlap btn-group" style="display: flex;">
-										<c:url var="createNewsURL" value="#"/>
-											<a flag="info" class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-												data-toggle="tooltip" title='Thêm bình luận' href='${createNewsURL}'> 
-												<span>
-													<i class="fa fa-plus-circle bigger-110 purple"></i>
-												</span>
-											</a>
-											<button id="btnDelete" type="button" 
-												class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-												data-toggle="tooltip" title='Xóa bài viết'>
-												<span> <i class="fa-solid fa-trash" style="color: red;"></i>
-												</span>
-											</button>
-										</div>
-									</div>
 								</div>
 							</div>
+							<br/><br/>
 							<div class="row">
 								<div class="col-xs-12">
 									<div class="table-responsive">

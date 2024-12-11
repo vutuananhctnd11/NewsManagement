@@ -34,5 +34,17 @@ public class UserConverter {
 		result.setFacebook(dto.getFacebook());
 		return result;
 	}
+	public UserEntity toEntity (UserDTO dto) {
+		UserEntity result = new UserEntity();
+		result.setUserName(dto.getUserName());
+		result.setPassword(dto.getPassword());
+		result.setFullName(dto.getFullName());
+		result.setBirthday(dto.getBirthday());
+		result.setGender(dto.getGender());
+		result.setEmail(dto.getEmail());
+		result.setPhoneNumber(dto.getPhoneNumber());
+		result.setFacebook(dto.getFacebook());
+		return result;
+	}
 
 }

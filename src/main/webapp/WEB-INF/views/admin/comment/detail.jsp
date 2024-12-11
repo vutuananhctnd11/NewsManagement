@@ -32,7 +32,6 @@
 									<div class="pull-right tableTools-container" style="display: flex;">
 									
 										<div class="dt-buttons btn-overlap btn-group" style="display: flex;">
-										<c:url var="createNewsURL" value="#"/>
 											<a flag="info" class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
 												data-toggle="tooltip" title='Thêm bình luận' onclick="add()"> 
 												<span>

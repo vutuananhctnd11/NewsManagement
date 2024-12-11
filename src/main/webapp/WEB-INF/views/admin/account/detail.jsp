@@ -11,12 +11,16 @@
 	<body class="no-skin">
 		<div class="main-content">
 			<div class="main-content-inner">
+				<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+					<ul class="breadcrumb" style="font-size: 14px;">
+						<li><i class="ace-icon fa fa-home home-icon"></i> <a href="<c:url value = '/quantri/trangchu'/>">Trang chủ</a></li>
+						<li><a href="#">Quản lý tài khoản</a></li>
+						<li><a href="<c:url value = '/quantri/taikhoan/danhsach?page=1&limit=5'/>">Danh sách tài khoản</a></li>
+						<li><a href="#">Thông tin chi tiết</a></li>
+					</ul>
+					<!-- /.breadcrumb -->
+				</div>
 				<div class="page-content">
-					<div class="page-header">
-						<h1>
-							Thông tin tài khoản
-						</h1>
-					</div>
 					<div class="row">
 						<div class="col-xs-12">
 							<div id="user-profile-3" class="user-profile row">

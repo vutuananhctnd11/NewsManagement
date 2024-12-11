@@ -1,5 +1,7 @@
 package com.laptrinhjavaweb.controller.admin;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dto.UserDTO;
+import com.laptrinhjavaweb.entity.RoleEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
+import com.laptrinhjavaweb.repository.RoleRepository;
 import com.laptrinhjavaweb.repository.UserRepository;
+import com.laptrinhjavaweb.service.IRoleService;
 import com.laptrinhjavaweb.service.IUserService;
 import com.laptrinhjavaweb.util.SecurityUtils;
 
@@ -30,6 +35,9 @@ public class AccountController {
 	
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private IRoleService roleService;
 	
 	@RequestMapping(value = "/quantri/taikhoan/thongtin", method = RequestMethod.GET)
 	public ModelAndView AccountProfile () {
@@ -62,6 +70,15 @@ public class AccountController {
 		UserEntity entity = userRepository.findOne(userId);
 		UserDTO model = userConverter.toDTO(entity);
 		mav.addObject("model", model);
+		return mav;
+	}
+	
+	@RequestMapping(value="/quantri/taikhoan/taomoi")
+	public ModelAndView addAccount () {
+		ModelAndView mav = new ModelAndView("/admin/account/create");
+		UserDTO model = new UserDTO();
+		mav.addObject("model", model);
+		mav.addObject("roles", roleService.findAll());
 		return mav;
 	}
 

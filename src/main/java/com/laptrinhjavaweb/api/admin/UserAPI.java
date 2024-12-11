@@ -1,6 +1,9 @@
 package com.laptrinhjavaweb.api.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +18,22 @@ public class UserAPI {
 	private IUserService userService;
 
 	@PutMapping("/api/profile")
-	public UserDTO editUserProfile (@RequestBody UserDTO dto) {
+	public ResponseEntity<?> editUserProfile (@RequestBody UserDTO dto) {
 		return userService.updateProfile(dto);
+	}
+	
+	@PutMapping("/api/account")
+	public void lockedOrUnlockAccount (@RequestBody long[] ids) {
+		userService.lockedOrUnlockedAccount(ids);
+	}
+	
+	@PostMapping("/api/account")
+	public ResponseEntity<?> createAccount (@RequestBody UserDTO dto) {
+		return userService.createAccount(dto);
+	}
+	
+	@DeleteMapping("api/account")
+	public void deleteAccount (@RequestBody long[] ids) {
+		userService.deleteAccount(ids);
 	}
 }

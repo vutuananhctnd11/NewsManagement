@@ -10,7 +10,7 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	private String email;
 	private String phoneNumber;
 	private String facebook;
-	private long roleId;
+	private String roleCode;
 	private String roleName;
 	private int status;
 	public String getUserName() {
@@ -31,11 +31,11 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public long getRoleId() {
-		return roleId;
+	public String getRoleCode() {
+		return roleCode;
 	}
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
 	}
 	public String getRoleName() {
 		return roleName;

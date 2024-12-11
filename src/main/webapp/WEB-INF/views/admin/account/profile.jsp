@@ -48,12 +48,12 @@
 	
 												<div class="row">
 	
-													<div class="col-xs-12 col-sm-8">
+													<div class="col-xs-12 col-sm-8" style="margin-left: 30px;">
 														<div class="form-group">
 															<label class="col-sm-4 control-label no-padding-right" for="userName">Tên đăng nhập:</label>
 	
 															<div class="col-sm-8">
-																<form:input style="width: 300px;" id="userName" path="userName" class="lock"/>
+																<form:input style="width: 250px;" id="userName" path="userName" class="lock"/>
 															</div>
 														</div>
 	
@@ -63,12 +63,12 @@
 															<label class="col-sm-4 control-label no-padding-right" for="fullName">Họ và tên:</label>
 	
 															<div class="col-sm-8">
-																<form:input style="width: 300px;" class="profile" path="fullName" id="fullName"/>
+																<form:input style="width: 250px;" class="profile" path="fullName" id="fullName"/>
 															</div>
 														</div>
 													</div>
 												</div>
-	
+												
 												<hr />
 												<div class="form-group">
 													<label class="col-sm-3 control-label no-padding-right" for="ngaySinh">Ngày sinh:</label>
@@ -310,11 +310,11 @@
 	            dataType: 'json',
 	            success: function (result) {
 	            	Swal.fire("", "Sửa thông tin thành công", "success").then(function(apply){
-	            		window.location.href = "${profileURL}?";
+	            		window.location.href = "${profileURL}";
 	            	});
 	            },
 	            error: function (error) {
-	            	window.location.href = "${profileURL}?message=error_system";
+	            	Swal.fire("Lỗi hệ thống!", error.responseText, "error");
 	            }
 	        });		
 		}

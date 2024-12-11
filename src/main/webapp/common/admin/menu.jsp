@@ -96,6 +96,13 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
+                <li>
+                    <a href="<c:url value='/quantri/taikhoan/taomoi'/>">
+                    	<i class="fa-solid fa-square-plus" style="margin: 0px 5px;"></i>
+                        Thêm tài khoản
+                    </a>
+                    <b class="arrow"></b>
+                </li>
             </ul>
         </li>
         <li >
