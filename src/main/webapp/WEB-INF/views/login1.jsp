@@ -19,6 +19,11 @@
 							Bạn không có quyền truy cập vào trang quản trị ! <br/> Hãy đăng nhập bằng <b>tài khoản admin</b> !
 					</div>
 				</c:if>
+				<c:if test="${param.registerSuccess != null}">
+					<div class="alert alert-success">	
+							Đăng ký thành công, hãy đăng nhập !
+					</div>
+				</c:if>
 					<div class="form-group">
 						<div class="form-label-group">
 							<input type="text" id="userName" name="j_username" class="form-control" placeholder="Tên đăng nhập" required="required" autofocus="autofocus"> 
@@ -39,8 +44,7 @@
 					<button type="submit" class="btn btn-primary btn-block">Đăng nhập </button>
 				</form>
 				<div class="text-center">
-					<a class="d-block small mt-3" href="#">Đăng ký tài khoản người dùng</a> 
-					<a class="d-block small" href="#">Quên mật khẩu?</a>
+					<a class="d-block small mt-3" href="<c:url value = '/dangky'/>">Đăng ký tài khoản người dùng</a> 
 				</div>
 			</div>
 		</div>

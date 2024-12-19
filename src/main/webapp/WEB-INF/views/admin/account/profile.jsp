@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <c:url var="profileAPI" value="/api/profile"/>
+<c:url var="passwordAPI" value="/api/password"/>
 <c:url var="profileURL" value="/quantri/taikhoan/thongtin"/>
 	
 <html>
@@ -170,49 +171,66 @@
 														</span>
 													</div>
 												</div>
+												<br/>
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9 button-container">
+														<button class="btn btn-info" type="button" id="editProfile">
+															<i class="ace-icon fa fa-check bigger-110"></i>
+															Sửa thông tin
+														</button>
+													</div>
+												</div>
 	
 											</div>
 
 											
-											<div id="edit-password" class="tab-pane">
+											<div id="edit-password" class="tab-pane" >
 												<div class="space-10"></div>
-												<div class="form-group">
+												<div class="form-group" style="font-size: 16px;">
 													<label class="col-sm-3 control-label no-padding-right" for="password">Mât khẩu hiện tại</label>
 	
 													<div class="col-sm-9">
-														<input style="width: 300px;" type="password" id="password" />
+														<input style="width: 250px; font-size: 16px;" type="password" id="password" />
 													</div>
 												</div>
 	
-												<div class="form-group">
+												<div class="form-group"  style="font-size: 16px;">
 													<label class="col-sm-3 control-label no-padding-right" for="newPassword">Mật khẩu mới</label>
 	
 													<div class="col-sm-9">
-														<input style="width: 300px;" type="password" id="newPassword" />
+														<input style="width: 250px; font-size: 16px;" type="password" id="newPassword" />
 													</div>
 												</div>
 	
 												<div class="space-4"></div>
 	
-												<div class="form-group">
+												<div class="form-group" style="font-size: 16px;">
 													<label class="col-sm-3 control-label no-padding-right" for="confirmNewPassword">Xác nhận mật khẩu</label>
 	
 													<div class="col-sm-9">
-														<input style="width: 300px;" type="password" id="confirmNewPassword" />
+														<input style="width: 250px; font-size: 16px;" type="password" id="confirmNewPassword" />
 													</div>
 												</div>
+												<br/>
+												<div class="clearfix ">
+													<div class="col-md-offset-3 col-md-9">
+														<button class="btn btn-success" type="button" id="savePassword">
+														<i class="ace-icon fa fa-check bigger-110"></i>
+														Lưu
+														</button>
+								
+														<button style="margin-left: 80px;" class="btn" type="reset" id="cancelPasword">
+														<i class="ace-icon fa fa-undo bigger-110"></i>
+														Hủy
+														</button>
+													</div>
+												</div>
+												
 											</div>
 										</div>
 									</div>
 	
-									<div class="clearfix form-actions">
-										<div class="col-md-offset-3 col-md-9 button-container">
-											<button class="btn btn-info" type="button" id="editProfile">
-												<i class="ace-icon fa fa-check bigger-110"></i>
-												Sửa thông tin
-											</button>
-										</div>
-									</div>
+									
 								</form:form>
 							</div>
 							</div>
@@ -280,8 +298,7 @@
             	    updateProfile(data);
                 });
             });
-            
-            
+
             
             function resetToEditState() {
                 $('.profile').prop('disabled', true);
@@ -319,6 +336,46 @@
 	        });		
 		}
 		
+		// đổi mật khẩu
+		$('#savePassword').on('click', function () {
+			if ($('#password').val() == "") {
+				alert("Chưa nhập mật khẩu hiện tại!"); return;
+			}
+			if ($('#newPassword').val() == "") {
+				alert("Chưa nhập mật khẩu mới"); return;
+			}
+			if ($('#confirmNewPassword').val() != $('#newPassword').val()) {
+				alert("Xác nhận mật khẩu không trùng khớp với mật khẩu!"); return;
+			}
+			
+			let newPassword = $('#newPassword').val();
+			let password = $('#password').val();
+			let userName = "${model.userName}";
+			let data = {
+				    userName: userName,
+				    newPassword: newPassword,
+				    password: password
+				};
+			//gọi api
+			$.ajax({
+	            url: '${passwordAPI}',
+	            method: 'PUT',
+	            contentType: 'application/json',
+	            data: JSON.stringify(data),
+	            dataType: 'json',
+	            success: function (result) {
+	            	Swal.fire("", "Đổi mật khẩu thành công", "success").then(function(apply){
+	            		window.location.href = "${profileURL}";
+	            	});
+	            },
+	            error: function (error) {
+	            	Swal.fire("Lỗi hệ thống!", error.responseText, "error");
+	            }
+	        });
+    	});
+		
+		
+			
 
 		
 		</script>

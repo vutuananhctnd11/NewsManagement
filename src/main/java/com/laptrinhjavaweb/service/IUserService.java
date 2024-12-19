@@ -15,5 +15,6 @@ public interface IUserService {
 	void lockedOrUnlockedAccount (long[] ids);
 	void deleteAccount (long[] ids);
 	ResponseEntity<?> createAccount (UserDTO dto);
+	ResponseEntity<?> changePassword (UserDTO dto);
 
 }

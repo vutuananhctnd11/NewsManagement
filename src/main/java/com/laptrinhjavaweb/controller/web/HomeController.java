@@ -5,11 +5,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.laptrinhjavaweb.dto.UserDTO;
 
 @Controller(value = "homeControllerOfWeb")
 public class HomeController {
@@ -26,9 +32,22 @@ public class HomeController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/dangky")
+	public ModelAndView register() {
+	    ModelAndView mav = new ModelAndView("register");
+	    UserDTO model = new UserDTO();
+	    mav.addObject("model", model);
+	    return mav;
+	}
+	
 	@RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
 		return new ModelAndView("redirect:/dangnhap?nopermission");
+	}
+	
+	@RequestMapping(value = "/editorAccessDenied", method = RequestMethod.GET)
+	public ModelAndView editorAccessDenied() {
+		return new ModelAndView("/admin/denied");
 	}
 	
 	@RequestMapping(value = "/thoat", method = RequestMethod.GET)

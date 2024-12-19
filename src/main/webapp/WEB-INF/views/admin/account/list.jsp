@@ -13,7 +13,7 @@
 
 <body>
 	<div class="main-content">
-		<form action="<c:url value = '/quantri/binhluan/chitiet'/>" id="formSubmit" method="get">
+		<form action="<c:url value = '/quantri/taikhoan/danhsach'/>" id="formSubmit" method="get">
 
 			<div class="main-content-inner">
 				<div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -82,7 +82,7 @@
 															<c:if test="${item.status == 0}"><p style="text-align: center; color:#EE0000; font-weight: bold;">Đã khóa</p></c:if>
 														</td>
 														<td style="display: flex; justify-content: center; width: 200px;">
-														<c:url var="accountDetailURL" value="/quantri/taikhoan/danhsach/chitiet">
+															<c:url var="accountDetailURL" value="/quantri/taikhoan/danhsach/chitiet">
 																<c:param name="userid" value="${item.id}"></c:param>
 															</c:url>
 															<a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip" title="Xem chi tiết" 

@@ -13,4 +13,10 @@
     <decorator name="login" page="login1.jsp">
         <pattern>/dangnhap</pattern>
     </decorator>
+    <decorator name="register" page="register.jsp">
+        <pattern>/dangky</pattern>
+    </decorator>
+    <decorator name="register" page="admin.jsp">
+        <pattern>/editorAccessDenied</pattern>
+    </decorator>
 </decorators>

@@ -12,6 +12,7 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	private String facebook;
 	private String roleCode;
 	private String roleName;
+	private String newPassword;
 	private int status;
 	public String getUserName() {
 		return userName;
@@ -78,6 +79,12 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	}
 	public void setFacebook(String facebook) {
 		this.facebook = facebook;
+	}
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 	
  

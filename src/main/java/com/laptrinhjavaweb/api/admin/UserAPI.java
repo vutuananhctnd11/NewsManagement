@@ -22,6 +22,11 @@ public class UserAPI {
 		return userService.updateProfile(dto);
 	}
 	
+	@PutMapping("/api/password")
+	public ResponseEntity<?> changePassword (@RequestBody UserDTO dto) {
+		return userService.changePassword(dto);
+	}
+	
 	@PutMapping("/api/account")
 	public void lockedOrUnlockAccount (@RequestBody long[] ids) {
 		userService.lockedOrUnlockedAccount(ids);

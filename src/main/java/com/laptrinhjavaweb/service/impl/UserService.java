@@ -126,6 +126,12 @@ public class UserService implements IUserService {
 					 .header("Content-Type", "text/plain; charset=UTF-8")
 					 .body("Đã tồn tại tài khoản có tên đăng nhập: "+dto.getUserName());
 		}
+		if (dto.getUserName().length()<6 || dto.getUserName().length() > 12) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					 .header("Content-Type", "text/plain; charset=UTF-8")
+					 .body("Tên đăng nhập phải có độ dài từ 6-12 ký tự!");
+		}
+		
 		String password = dto.getPassword();
 		if (password.length()<6 || password.length()>12) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -152,6 +158,32 @@ public class UserService implements IUserService {
 		entity.setPassword(PasswordUtil.encryptPassword(dto.getPassword()));
 		entity = userRepository.save(entity);
 		return ResponseEntity.ok(userConverter.toDTO(entity));
+	}
+
+	@Override
+	public ResponseEntity<?> changePassword(UserDTO dto) {
+		String password = dto.getPassword();
+		String newPassword = dto.getNewPassword();
+		if (newPassword.length()<6 || newPassword.length()>12) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					 .header("Content-Type", "text/plain; charset=UTF-8")
+					 .body("Mật khẩu phải có độ dài từ 6-12 ký tự!");
+		}
+		UserEntity user = userRepository.findOneByUserName(dto.getUserName());
+		if(!PasswordUtil.matchesPassword(password, user.getPassword())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					 .header("Content-Type", "text/plain; charset=UTF-8")
+					 .body("Mật khẩu hiện tại không đúng!");
+		}
+		if (PasswordUtil.matchesPassword(newPassword, user.getPassword())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					 .header("Content-Type", "text/plain; charset=UTF-8")
+					 .body("Mật khẩu mới không được trùng với mật khẩu hiện tại!");
+		}
+		newPassword = PasswordUtil.encryptPassword(newPassword);
+		user.setPassword(newPassword);
+		user = userRepository.save(user);
+		return ResponseEntity.ok(userConverter.toDTO(user));
 	}
 
 

@@ -9,8 +9,10 @@
             
     <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
     
-    	<intercept-url pattern="/quantri/**" access="hasAnyRole('ADMIN')" /> <!-- chỉ cho ADMIN đăng nhập vào trang quản trị -->
+    	<intercept-url pattern="/quantri/taikhoan/taomoi" access="hasAnyRole('ADMIN')" />
+    	<access-denied-handler error-page="/editorAccessDenied" />
     	
+    	<intercept-url pattern="/quantri/**" access="hasAnyRole('ADMIN', 'EDITOR')" />    	
     	<access-denied-handler error-page="/accessDenied" />
         <form-login  login-page="/dangnhap"
                      username-parameter="j_username"
