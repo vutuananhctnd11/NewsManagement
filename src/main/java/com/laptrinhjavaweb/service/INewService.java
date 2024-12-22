@@ -20,5 +20,8 @@ public interface INewService {
 	Map<Long, Long> getTotalCommentOfNews (NewsDTO newsdto);
 	ResponseEntity<?> uploadFile (MultipartFile file, HttpServletRequest request);
 	ResponseEntity<?> inputFileWord (MultipartFile file, HttpServletRequest request);
-	
+	List<NewsDTO> filterNews (String filterName, Pageable pageable);
+	int getTotalItem(String filterName);
+	List<NewsDTO> searchNews (String search);
+	List<NewsDTO> searchAnFilterNews (String filterName, String search);
 }

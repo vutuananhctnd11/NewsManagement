@@ -51,7 +51,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public int totalUser() {
+	public int totalAccount() {
 		return (int) userRepository.count();
 	}
 
@@ -184,6 +184,30 @@ public class UserService implements IUserService {
 		user.setPassword(newPassword);
 		user = userRepository.save(user);
 		return ResponseEntity.ok(userConverter.toDTO(user));
+	}
+
+	@Override
+	public int totalUser() {
+		List<UserEntity> users = userRepository.findAll();
+		int count = 0;
+		for (UserEntity user : users) {
+			if (user.getRoles().get(0).getCode().equals("USER")) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public int totalEditor() {
+		List<UserEntity> users = userRepository.findAll();
+		int count = 0;
+		for (UserEntity user : users) {
+			if (user.getRoles().get(0).getCode().equals("EDITOR")) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 

@@ -57,9 +57,12 @@ public class AccountController {
 		model.setLimit(limit);
 		Pageable pageable = new PageRequest(page-1, limit);
 		model.setListResult(userService.findAll(pageable));
-		model.setTotalItem(userService.totalUser());
+		model.setTotalItem(userService.totalAccount());
 		int totalPage = (int) Math.ceil((double) model.getTotalItem() / model.getLimit());
 		model.setTotalPage(totalPage);
+		
+		UserEntity user = userRepository.findOneByUserName(SecurityUtils.getPrincipal().getUsername());
+		model.setRoleCode(user.getRoles().get(0).getCode());
 		mav.addObject("model", model);
 		return mav;
 	}

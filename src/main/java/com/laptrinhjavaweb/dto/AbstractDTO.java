@@ -20,7 +20,7 @@ public class AbstractDTO<T> {
 	private Integer limit;
 	private Integer totalPage;
 	private Integer totalItem;
-	private String sortName;
+	private String filterName;
 	private String sortBy;
 	private String alert;
 	private String message;
@@ -92,11 +92,12 @@ public class AbstractDTO<T> {
 	public void setTotalItem(Integer totalItem) {
 		this.totalItem = totalItem;
 	}
-	public String getSortName() {
-		return sortName;
+	
+	public String getFilterName() {
+		return filterName;
 	}
-	public void setSortName(String sortName) {
-		this.sortName = sortName;
+	public void setFilterName(String filterName) {
+		this.filterName = filterName;
 	}
 	public String getSortBy() {
 		return sortBy;

@@ -89,7 +89,8 @@
 																href='${accountDetailURL}'>
 																<i class="fa-regular fa-eye"></i> 
 															</a>
-															<c:if test="${item.status == 1}">
+															<c:if test="${model.roleCode == 'ADMIN'}">
+																<c:if test="${item.status == 1}">
 																<a class="btn btn-sm btn-primary " data-toggle="tooltip" title="Khóa tài khoản" 
 																data-idLock="${item.id}" style="margin-left: 10px;">
 																<i class="fas fa-lock" style="color: #FF3333;"></i> 
@@ -105,6 +106,9 @@
 																data-id="${item.id}" style="margin-left: 10px;">
 																<i class="fa-solid fa-trash" ></i> 
 															</a>
+															</c:if>
+															
+															
 															
 														</td>
 													</tr>

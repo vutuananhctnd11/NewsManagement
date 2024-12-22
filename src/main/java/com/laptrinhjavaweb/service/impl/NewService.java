@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.hpsf.Array;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import com.laptrinhjavaweb.converter.NewsConverter;
 import com.laptrinhjavaweb.dto.NewsDTO;
@@ -242,4 +244,55 @@ public class NewService implements INewService {
 			
 		return ResponseEntity.ok(result);
 	}
+
+	@Override
+	public List<NewsDTO> filterNews(String filterName, Pageable pageable) {
+		List<NewsDTO> result = new ArrayList<>();
+		List<NewsEntity> entities = newsRepository.findByCategoryCode(filterName, pageable);
+		for (NewsEntity entity : entities) {
+			NewsDTO newsDTO = newsConverter.toDTO(entity);
+			result.add(newsDTO);
+		}
+		return result;
+	}
+
+	@Override
+	public int getTotalItem(String filterName) {
+		List<NewsEntity> entities = newsRepository.findByCategoryCode(filterName);
+		
+		return entities.size();
+	}
+
+	@Override
+	public List<NewsDTO> searchNews(String search) {
+		List<NewsEntity> entities = newsRepository.findAll();
+		List<NewsDTO> result = new ArrayList<>();
+		for (NewsEntity entity: entities) {
+			search = search.toLowerCase();
+			String title = entity.getTitle().toLowerCase();
+			String shortDescription = entity.getShortDescription().toLowerCase();
+			if (title.contains(search) || shortDescription.contains(search)) {
+				NewsDTO dto = newsConverter.toDTO(entity);
+				result.add(dto);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<NewsDTO> searchAnFilterNews(String filterName, String search) {
+		List<NewsEntity> entities = newsRepository.findByCategoryCode(filterName);
+		List<NewsDTO> result = new ArrayList<>();
+		for (NewsEntity entity: entities) {
+			search = search.toLowerCase();
+			String title = entity.getTitle().toLowerCase();
+			String shortDescription = entity.getShortDescription().toLowerCase();
+			if (title.contains(search) || shortDescription.contains(search)) {
+				NewsDTO dto = newsConverter.toDTO(entity);
+				result.add(dto);
+			}
+		}
+		return result;
+	}
+
 }

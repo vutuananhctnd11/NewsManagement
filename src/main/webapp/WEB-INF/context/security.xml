@@ -9,11 +9,10 @@
             
     <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
     
-    	<intercept-url pattern="/quantri/taikhoan/taomoi" access="hasAnyRole('ADMIN')" />
-    	<access-denied-handler error-page="/editorAccessDenied" />
-    	
+    	<intercept-url pattern="/quantri/taikhoan/taomoi" access="hasAnyRole('ADMIN')" />    	
     	<intercept-url pattern="/quantri/**" access="hasAnyRole('ADMIN', 'EDITOR')" />    	
-    	<access-denied-handler error-page="/accessDenied" />
+    	<access-denied-handler ref="customAccessDeniedHandler" />
+    	
         <form-login  login-page="/dangnhap"
                      username-parameter="j_username"
                      password-parameter="j_password"
@@ -33,5 +32,7 @@
     <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
     <beans:bean id="customUserDetailsService" class="com.laptrinhjavaweb.service.impl.CustomUserDetailsService" />
     <beans:bean id="customSuccessHandler" class="com.laptrinhjavaweb.security.CustomSuccessHandler" />
+    <!-- Cấu hình custom AccessDeniedHandler -->
+    <beans:bean id="customAccessDeniedHandler" class="com.laptrinhjavaweb.security.CustomAccessDeniedHandler" />
     
 </beans:beans>

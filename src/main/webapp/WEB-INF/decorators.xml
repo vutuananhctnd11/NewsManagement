@@ -16,7 +16,7 @@
     <decorator name="register" page="register.jsp">
         <pattern>/dangky</pattern>
     </decorator>
-    <decorator name="register" page="admin.jsp">
+   	<decorator name="denied" page="admin.jsp">
         <pattern>/editorAccessDenied</pattern>
     </decorator>
 </decorators>

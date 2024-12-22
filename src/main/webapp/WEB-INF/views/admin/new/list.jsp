@@ -31,9 +31,21 @@
 									${message}
 								</div>
 							</c:if>
-							<div class="widget-box table-filter">
+							<div class="table-filter">	
 								<div class="table-btn-controls">
-									<div class="pull-right tableTools-container" style="display: flex;">
+									<div class="pull-right tableTools-container" style="display: flex; justify-content: space-between;  width: 100%;">
+										<div style="width: 60%">
+											<label>Tìm kiếm:</label>
+											<input type="text" id="searchText" placeholder="Nhập từ khóa" style="width: 60%"/>
+											<input type="button" id="searchButton" value="Tìm" class="btn btn-white btn-primary btn-bold" style="width: 10%"/>
+											
+											<select class="dt-button btn btn-white btn-primary " id="filterCategory" style="height: 100%">
+										    <option value="">Lọc theo thể loại</option>
+										    <c:forEach var="item" items="${categories}">
+										    	<option value="${item.key}">${item.value}</option>
+										    </c:forEach>
+											</select>
+										</div>
 									
 										<div class="dt-buttons btn-overlap btn-group" style="display: flex;">
 										<c:url var="createNewsURL" value="/quantri/baiviet/chinhsua"/>
@@ -67,7 +79,7 @@
 													<th style="text-align: center; font-size: 16px;">Thao tác</th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody id="searchResults">
 												<c:forEach var="item" items="${model.listResult}">
 													<tr style="font-size: 16px;">
 													<td><input type="checkbox" class="checkbox" id="checkbox_${item.id}" value="${item.id}" > </td>
@@ -106,6 +118,8 @@
 										</div>
 										<input type="hidden" value="" id="page" name="page"/>
 										<input type="hidden" value="" id="limit" name="limit"/>
+										<input type="hidden" value="" id="filterName" name="filter"/>
+										<input type="hidden" value="" id="search" name="search"/>
 									</div>
 								</div>
 							</div>
@@ -117,8 +131,8 @@
 	</div>
 	<!-- /.main-content -->
 	<script>
-	var page = ${model.page};
-	var limit = ${model.limit};
+	const page = ${model.page};
+	const limit = ${model.limit};
 	//hàm config checkbox
     $(document).ready(function() {
 	    $('#checkAll').on('change', function() {
@@ -161,9 +175,17 @@
 		function setSelectFromURL() {
             const currentURL = new URLSearchParams(window.location.search);
             const limit = currentURL.get("limit");
+            const filter = currentURL.get("filter");
+            const search = currentURL.get("search");
             if (limit) {
-                const selectElement = document.getElementById("chooseLimit");
-                selectElement.value = limit;
+                $('#chooseLimit').val(limit);
+            }
+            if (filter){
+            	const filterElement = $('#filterCategory');
+                filterElement.val(filter);
+            }
+            if (search){
+            	$('#searchText').val(search);
             }
         }
         window.onload = setSelectFromURL;
@@ -229,6 +251,31 @@
 	            }
 	        });
 		}
+        
+        $(document).ready(function () {
+            $('#searchButton').on('click', function () {
+                const search = $('#searchText').val();
+                const category = $('#filterCategory').val();
+                $('#page').val(page);
+    			$('#limit').val(limit);
+                if (search) {
+                    $('#search').val(search);
+                } else {
+                    $('#search').val('');
+                    $('#search').remove();
+                }
+                if (category) {
+                    $('#filterName').val(category);
+                } else {
+                    $('#filterName').val('');
+                    $('#filterName').remove();
+                }
+                $('#formSubmit').submit();
+            });
+        });
+        
+        
+            
 	</script>
 </body>
 

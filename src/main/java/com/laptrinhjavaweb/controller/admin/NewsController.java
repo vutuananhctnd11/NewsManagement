@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -29,14 +30,29 @@ public class NewsController {
 	private MessageUtil messageUtil;
 
 	@RequestMapping(value = "/quantri/baiviet/danhsach", method = RequestMethod.GET)
-	public ModelAndView showList(@RequestParam("page") int page, @RequestParam("limit") int limit, HttpServletRequest request) {
+	public ModelAndView showList(@RequestParam("page") int page, @RequestParam("limit") int limit,
+								@RequestParam(value="filter", required=false) String filterName,
+								@RequestParam(value="search", required=false) String search, HttpServletRequest request) {
 		NewsDTO model = new NewsDTO();
 		model.setPage(page);
 		model.setLimit(limit);
 		ModelAndView mav = new ModelAndView("admin/new/list");
 		Pageable pageable = new PageRequest(page-1, limit);		//thư viện Pageable phân trang
-		model.setListResult(newService.findAll(pageable));
-		model.setTotalItem(newService.getTotalItem());
+		if (filterName !=null && search != null ) {
+			model.setListResult(newService.searchAnFilterNews(filterName, search));
+			model.setTotalItem(newService.getTotalItem(filterName));
+		} else if (filterName ==null && search == null ) {
+			model.setListResult(newService.findAll(pageable));
+			model.setTotalItem(newService.getTotalItem());
+		} else  if (filterName != null) {
+			model.setListResult(newService.filterNews(filterName, pageable));
+			model.setTotalItem(newService.getTotalItem(filterName));
+		} else if (search !=null) {
+			model.setListResult(newService.searchNews(search));
+			model.setTotalItem(newService.getTotalItem(filterName));
+		}
+		
+		
 		model.setTotalPage((int) Math.ceil((double)model.getTotalItem() / model.getLimit()));
 		if (request.getParameter("message") !=null){
 			Map<String, String> message = messageUtil.getMessage(request.getParameter("message"));
