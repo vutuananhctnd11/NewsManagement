@@ -159,8 +159,22 @@
 				startPage: currentPage,
 				onPageClick : function(event, page) {
 					if (currentPage != page){
-						$('#page').val(page);
-						$('#limit').val(limit);
+						const search = $('#searchText').val();
+		                const category = $('#filterCategory').val();
+		                $('#page').val(page);
+		    			$('#limit').val(limit);
+		                if (search) {
+		                    $('#search').val(search);
+		                } else {
+		                    $('#search').val('');
+		                    $('#search').remove();
+		                }
+		                if (category) {
+		                    $('#filterName').val(category);
+		                } else {
+		                    $('#filterName').val('');
+		                    $('#filterName').remove();
+		                }
 						$('#formSubmit').submit();
 						
 					}
